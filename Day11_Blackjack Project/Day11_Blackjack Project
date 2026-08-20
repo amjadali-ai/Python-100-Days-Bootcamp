@@ -1,0 +1,65 @@
+import random
+import art
+def blackjack_project():
+    print(art.logo)
+    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+    def deal_card ():
+        return random.choice(cards)
+    user_cards = []
+    computer_cards = []
+    user_cards.append(deal_card())
+    user_cards.append(deal_card())
+    computer_cards.append(deal_card())
+    computer_cards.append(deal_card())
+
+    def calculate_score(card_list):
+        result = sum(card_list)
+        if result > 21 and 11 in card_list:
+            card_list.remove(11)
+            card_list.append(1)
+            return sum(card_list)
+        elif result == 21 and len(card_list) == 2:
+            return 0
+        else:
+            return result
+    user_score = calculate_score(user_cards)
+    computer_score = calculate_score(computer_cards)
+    print(f"Your Cards: {user_cards} current score: {user_score}\ncomputer card: {computer_cards[0]}")
+    should_continue = True
+    while should_continue:
+        choice = input("Do you want to add another card? 'y' for hit and 'n' for stand").lower()
+        if choice == "y":
+            user_cards.append(deal_card())
+            user_score = calculate_score(user_cards)
+            print(f"Your cards: {user_cards} current score: {user_score}")
+
+        else:
+            should_continue = False
+
+    while computer_score < 17:
+        computer_cards.append(deal_card())
+        computer_score = calculate_score(computer_cards)
+    def compare(user_score, computer_score):
+        if user_score == computer_score:
+            return f"Draw 🤔\ncomputer final hand: {computer_cards} computer final score: {computer_score}\nuser final hand: {user_cards} user final score: {user_score}"
+        elif computer_score == 21:
+            return f"Blackjack!\ncomputer win 😭\ncomputer final hand: {computer_cards} computer final score: {computer_score}\nuser final hand: {user_cards} user final score: {user_score}"
+        elif user_score == 21:
+            return f"Blackjack!\nuser win 😎\nuser final hands: {user_cards} user final score: {user_score}\ncomputer final hand: {computer_cards} computer final score: {computer_score}"
+        elif user_score > 21:
+            return f"you bust!\ncomputer win 😭\ncomputer final hand: {computer_cards} computer final score: {computer_score}\nuser final hand: {user_cards} user final score: {user_score}"
+        elif computer_score > 21:
+            return f"computer bust!\nuser win 😎\nuser final hand: {user_cards} user final score: {user_score}\ncomputer final hand: {computer_cards} computer final score: {computer_score}"
+        elif user_score > computer_score:
+            return f"user win 😎\nuser final hand: {user_cards} user final score: {user_score}\ncomputer final hand: {computer_cards} computer final score: {computer_score}"
+        elif computer_score > user_score:
+            return f"computer win 😭\ncomputer final hand: {computer_cards} computer final score: {computer_score}\nuser final hand: {user_cards} user final score: {user_score}"
+    print(compare(user_score, computer_score))
+blackjack_project()
+restart_or_not = input("Do you want to restart? (y/n): ").lower()
+while restart_or_not == "y":
+    print("\n" * 80)
+    blackjack_project()
+    restart_or_not = input("Do you want to restart? (y/n): ").lower()
+else:
+    print("Good bye!")

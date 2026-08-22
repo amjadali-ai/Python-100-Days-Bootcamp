@@ -1,0 +1,57 @@
+import random
+import art
+
+def select_num():
+	random_num = random.randint(1, 100)
+	return random_num
+
+secret_number = select_num()
+
+def user_check(user_number, secret_num):
+	if user_number == secret_num:
+		return "correct"
+	elif user_number > secret_num:
+		return "too high"
+	else:
+		return "too low"
+
+def play_game():
+	print(art.logo)
+	print("Welcome to Number Guessing Game")
+	print("I am thinking of a number between 1 and 100")
+	choice = input("enter your choice: easy or hard")
+	count_easy = 10
+	count_hard = 5
+	is_game_over = False
+	while not is_game_over:
+		user_number = int(input("Guess your number: "))
+		if choice == "easy":
+			result = user_check(user_number, secret_number)
+			print(result)
+			count_easy = count_easy - 1
+			print("attempts left", count_easy)
+			if count_easy == 0:
+				print(f"you lose and number was: {secret_number}")
+				is_game_over = True
+			if result == "correct":
+				print(f"you guessed the number: {secret_number}")
+				is_game_over = True
+
+		elif choice == "hard":
+			result = user_check(user_number,secret_number)
+			print(result)
+			count_hard = count_hard - 1
+			print("attempts left", count_hard)
+			if count_hard == 0:
+				print(f"you lose and number was: {secret_number}")
+				is_game_over = True
+			if result == "correct":
+				print(f"you guessed the number: {secret_number}")
+				is_game_over = True
+	print("")
+play_game()
+
+while input("Do you want to play again (y/n): ").lower() == "y":
+	print("\n"*50)
+	print("Welcome to Number Guessing Game")
+	play_game()

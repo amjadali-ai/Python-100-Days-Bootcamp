@@ -1,0 +1,71 @@
+import art
+import random
+from game_data import data
+print(art.logo)
+
+# take two random accounts from data
+def select():
+	""" it will give random account"""
+	return random.choice(data)
+
+# Generate a random account from data
+def format_account(account):
+	"""Formats the account for printing"""
+	name = account["name"]
+	followers = account["follower_count"]
+	desc = account["description"]
+	country = account["country"]
+	return f"{name}, {followers}, a {desc}, from {country}"
+
+
+# compare followers of both make function for it
+def compare(account1, account2,account3,guess):
+	""" Compare three accounts """
+	if account1["follower_count"] > account2["follower_count"] and account1["follower_count"] > account3["follower_count"]:
+		return guess == "a"
+	elif account2["follower_count"] > account1["follower_count"] and account2["follower_count"] > account3["follower_count"]:
+		return guess == "b"
+	else:
+		return guess == "c"
+
+# check correctness
+def play_game():
+	""" Play a game of Higher or Lower """
+	score = 0
+	account_a = select()
+	should_continue = True
+	while should_continue:
+		account_b = select()
+		while account_b == account_a:
+			account_b = select()
+		account_c = select()
+		while account_c == account_a or account_c == account_b:
+			account_c = select()
+
+			# Now all 3 are different
+			# ... display, guess, compare ...
+		print(f"Compare A: {format_account(account_a)}")
+		print(art.vs)
+		print(f"against B: {format_account(account_b)}")
+		print(art.vs)
+		print(f"against C: {format_account(account_c)}")
+		guess = input("Enter your guess A or B or C: ")
+		is_correct = compare(account_a, account_b,account_c, guess)
+		print(is_correct)
+		if is_correct:
+			score += 1
+			account_a = account_c
+			print(f"You got it! The score is {score}.")
+			print("\n"*85)
+			continue
+
+		else:
+			print("\n" * 85)
+			print("Game Over your score is: ", score)
+			should_continue = False
+
+play_game()
+while input("Do you want to play again? (y/n): ").lower() == "y":
+	print("\n" * 85)
+	print(art.logo)
+	play_game()
